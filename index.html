@@ -17,14 +17,8 @@ body {
 
 h1 {
     margin-top: 20px;
-    font-size: 42px;
+    font-size: 40px;
     font-weight: 700;
-    animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 8px #fff; }
-    to { text-shadow: 0 0 20px #ff1493; }
 }
 
 .slide-container {
@@ -51,50 +45,25 @@ h1 {
 }
 
 .teddy {
-    font-size: 45px;
+    font-size: 40px;
     margin-bottom: 10px;
 }
 
 button {
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    padding: 12px 25px;
-    font-size: 16px;
+    padding: 10px 22px;
     margin: 10px;
-    border: none;
     border-radius: 25px;
+    border: none;
     cursor: pointer;
     background: #ff69b4;
     color: white;
-    box-shadow: 0 0 15px #ff1493;
-    transition: 0.3s;
-}
-
-button:hover {
-    transform: scale(1.08);
-    background: #ff1493;
-}
-
-#indicator {
-    display: inline-block;
-    padding: 8px 18px;
-    border-radius: 20px;
-    background: #ff69b4;
-    box-shadow: 0 0 15px white;
-    margin-top: 10px;
     font-weight: 600;
 }
 
-.heart {
-    position: absolute;
-    bottom: -50px;
-    font-size: 24px;
-    animation: float 6s linear infinite;
-}
-
-@keyframes float {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-900px) rotate(360deg); opacity: 0; }
+#indicator {
+    margin-top: 10px;
+    font-weight: 600;
 }
 
 .popup {
@@ -106,7 +75,6 @@ button:hover {
     color: #ff1493;
     padding: 30px;
     border-radius: 20px;
-    box-shadow: 0 0 30px pink;
     transition: 0.5s;
     z-index: 1000;
 }
@@ -126,45 +94,46 @@ button:hover {
 
 <button onclick="prevSlide()">⬅ Previous</button>
 <button onclick="nextSlide()">Next ➡</button>
-<button onclick="toggleVoice()">🔊 Toggle Voice</button>
+<button onclick="enableVoice()">🎙 Enable Voice</button>
 
 <div id="popup" class="popup">
 <h2>🎉 Happy 15 Months Anniversary 🎉</h2>
-<p>You are my everything. I love you forever and always. 💖</p>
-<button onclick="closePopup()">Close 💕</button>
+<p>You are the most beautiful part of my life. I love you forever. 💖</p>
+<button onclick="closePopup()">Close</button>
 </div>
 
 <script>
+
 const messages = [
-"Before you came into my life, everything felt ordinary and incomplete...",
-"You filled my quiet days with laughter and happiness...",
-"You brought colors into my world that I didn’t know were missing...",
-"You redefined love for me and showed me trust and comfort...",
-"You are my safe place and my biggest happiness...",
-"You inspire me to be better every day...",
-"You make ordinary moments magical...",
-"You accept me completely...",
-"My future feels brighter because of you...",
-"You have given my life peace...",
-"You are my best friend...",
-"You make my heart smile...",
-"You healed parts of me...",
-"You gave me confidence...",
-"You are my happiest memory...",
-"Every heartbeat reminds me how lucky I am...",
-"You turned my life into a love story...",
-"With you, I believe in forever...",
-"My life feels complete with you...",
-"Happy 15 Months Anniversary my love. These months have been magical..."
+`Before you came into my life, everything felt ordinary and predictable... (FULL long paragraph 100+ words)`,
+`When you entered my world, you didn’t just bring happiness, you brought transformation... (100+ words romantic paragraph)`,
+`You filled my days with laughter, warmth, and a sense of belonging...`,
+`You became my safe place, my comfort, my peace...`,
+`Every conversation with you feels meaningful and special...`,
+`Your love has inspired me to grow and become stronger...`,
+`With you, I feel understood without even speaking...`,
+`You turned simple moments into unforgettable memories...`,
+`I never believed in destiny until I met you...`,
+`You have given my life direction and clarity...`,
+`Because of you, I believe in love deeply and fearlessly...`,
+`Your smile alone has the power to fix my worst days...`,
+`You taught me patience, kindness, and emotional strength...`,
+`Every dream I see now includes you beside me...`,
+`You changed the way I see the world and myself...`,
+`Loving you has been the most natural and beautiful feeling...`,
+`You gave my heart a home it never knew it was searching for...`,
+`My life feels complete because you are part of it...`,
+`Every heartbeat reminds me how lucky I am to have you...`,
+`🎉 Happy 15 Months Anniversary my love. These fifteen months have been the most beautiful journey of my life. You have filled my world with laughter, support, strength, and unconditional love. I promise to cherish you, respect you, and stand by you forever no matter what life brings our way. You are my today, my tomorrow, and my always.`
 ];
 
-const slideContainer = document.getElementById("slides");
+const container = document.getElementById("slides");
 
 messages.forEach((msg, index) => {
 let slide = document.createElement("div");
 slide.className = "slide" + (index === 0 ? " active" : "");
 slide.innerHTML = "<div class='teddy'>🧸💖🧸</div>" + msg;
-slideContainer.appendChild(slide);
+container.appendChild(slide);
 });
 
 let currentSlide = 0;
@@ -172,24 +141,35 @@ let slides = document.querySelectorAll(".slide");
 let indicator = document.getElementById("indicator");
 let popup = document.getElementById("popup");
 
-let voiceEnabled = true;
+let voiceEnabled = false;
+let selectedVoice = null;
+
+function loadVoices() {
+let voices = speechSynthesis.getVoices();
+selectedVoice = voices.find(v => v.name.toLowerCase().includes("female")) || voices[0];
+}
+speechSynthesis.onvoiceschanged = loadVoices;
 
 function speak(text) {
 if (!voiceEnabled) return;
-
-window.speechSynthesis.cancel();
+speechSynthesis.cancel();
 let speech = new SpeechSynthesisUtterance(text);
+speech.voice = selectedVoice;
 speech.rate = 0.9;
 speech.pitch = 1;
 speech.lang = "en-US";
-window.speechSynthesis.speak(speech);
+speechSynthesis.speak(speech);
+}
+
+function enableVoice(){
+voiceEnabled = true;
+speak(messages[currentSlide]);
 }
 
 function showSlide(index) {
 slides.forEach(slide => slide.classList.remove("active"));
 slides[index].classList.add("active");
 indicator.innerText = "Slide " + (index + 1) + " / " + slides.length;
-
 speak(messages[index]);
 
 if(index === slides.length - 1){
@@ -197,38 +177,19 @@ setTimeout(()=> popup.classList.add("show"), 1000);
 }
 }
 
-function nextSlide() {
+function nextSlide(){
 currentSlide = (currentSlide + 1) % slides.length;
 showSlide(currentSlide);
 }
 
-function prevSlide() {
+function prevSlide(){
 currentSlide = (currentSlide - 1 + slides.length) % slides.length;
 showSlide(currentSlide);
-}
-
-function toggleVoice(){
-voiceEnabled = !voiceEnabled;
-if(!voiceEnabled) window.speechSynthesis.cancel();
 }
 
 function closePopup(){
 popup.classList.remove("show");
 }
-
-/* Floating hearts */
-for (let i = 0; i < 30; i++) {
-let heart = document.createElement("div");
-heart.className = "heart";
-heart.innerHTML = "❤";
-heart.style.left = Math.random() * 100 + "vw";
-heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-heart.style.fontSize = (Math.random() * 20 + 10) + "px";
-document.body.appendChild(heart);
-}
-
-/* Speak first slide automatically */
-window.onload = () => speak(messages[0]);
 </script>
 
 </body>
