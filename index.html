@@ -1,129 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Be My Valentine 💖</title>
+<title>Arnu Loves You</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
 body {
     margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffb6c1, #ffc0cb, #ffd1dc);
     overflow: hidden;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    font-family: 'Segoe UI', sans-serif;
     text-align: center;
     color: white;
 }
 
 h1 {
-    margin-top: 80px;
-    font-size: 2.5em;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-}
-
-.btn {
-    padding: 15px 40px;
-    font-size: 20px;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    margin: 20px;
-    transition: 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    position: relative;
-}
-
-#yesBtn { background-color: #ff4d6d; color: white; }
-#yesBtn:hover { transform: scale(1.1); }
-#noBtn { background-color: gray; color: white; }
-
-#message, #sadMessage {
-    font-size: 2em;
     margin-top: 20px;
-    display: none;
-    animation: pop 0.6s ease forwards;
+    font-size: 42px;
+    font-weight: 700;
+    animation: glow 2s infinite alternate;
 }
 
-@keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+@keyframes glow {
+    from { text-shadow: 0 0 8px #fff; }
+    to { text-shadow: 0 0 20px #ff1493; }
+}
 
-.sticker {
+.slide-container {
+    position: relative;
+    width: 85%;
+    height: 420px;
+    margin: 20px auto;
+}
+
+.slide {
     position: absolute;
-    font-size: 20px;
-    animation: float 5s linear infinite;
+    width: 100%;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.6s ease;
+    padding: 20px;
+    line-height: 1.8;
+    font-size: 18px;
 }
 
-@keyframes float { 0% { transform: translateY(100vh); opacity:1; } 100% { transform: translateY(-10vh); opacity:0; } }
+.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.teddy {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    padding: 12px 25px;
+    font-size: 16px;
+    margin: 10px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    background: #ff69b4;
+    color: white;
+    box-shadow: 0 0 15px #ff1493;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.08);
+    background: #ff1493;
+}
+
+#indicator {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 20px;
+    background: #ff69b4;
+    box-shadow: 0 0 15px white;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.heart {
+    position: absolute;
+    bottom: -50px;
+    font-size: 24px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-900px) rotate(360deg); opacity: 0; }
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: white;
+    color: #ff1493;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px pink;
+    transition: 0.5s;
+    z-index: 1000;
+}
+
+.popup.show {
+    transform: translate(-50%, -50%) scale(1);
+}
 </style>
 </head>
+
 <body>
 
-<h1>Will you be my Valentine? 💖</h1>
+<h1>💖 Arnu loves you 💖</h1>
+<div id="indicator">Slide 1 / 20</div>
 
-<button id="yesBtn" class="btn">Yes 💘</button>
-<button id="noBtn" class="btn">No 💔</button>
+<div class="slide-container" id="slides"></div>
 
-<div id="message">YAYYYY 🥰💞 You made me the happiest person ever!</div>
-<div id="sadMessage"></div>
+<button onclick="prevSlide()">⬅ Previous</button>
+<button onclick="nextSlide()">Next ➡</button>
+<button onclick="toggleVoice()">🔊 Toggle Voice</button>
 
-<!-- Background Music -->
-<audio autoplay loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-</audio>
+<div id="popup" class="popup">
+<h2>🎉 Happy 15 Months Anniversary 🎉</h2>
+<p>You are my everything. I love you forever and always. 💖</p>
+<button onclick="closePopup()">Close 💕</button>
+</div>
 
 <script>
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
-const message = document.getElementById('message');
-const sadMessage = document.getElementById('sadMessage');
-
-const sadTexts = [
-  "😢 Aww… why not?",
-  "💔 I’m a little sad now…",
-  "😭 My heart feels heavy…",
-  "😞 Don’t break my heart!",
-  "💔 I hoped for YES…"
+const messages = [
+"Before you came into my life, everything felt ordinary and incomplete...",
+"You filled my quiet days with laughter and happiness...",
+"You brought colors into my world that I didn’t know were missing...",
+"You redefined love for me and showed me trust and comfort...",
+"You are my safe place and my biggest happiness...",
+"You inspire me to be better every day...",
+"You make ordinary moments magical...",
+"You accept me completely...",
+"My future feels brighter because of you...",
+"You have given my life peace...",
+"You are my best friend...",
+"You make my heart smile...",
+"You healed parts of me...",
+"You gave me confidence...",
+"You are my happiest memory...",
+"Every heartbeat reminds me how lucky I am...",
+"You turned my life into a love story...",
+"With you, I believe in forever...",
+"My life feels complete with you...",
+"Happy 15 Months Anniversary my love. These months have been magical..."
 ];
 
-let noScale = 1;
+const slideContainer = document.getElementById("slides");
 
-noBtn.addEventListener('click', function() {
-    // Shrink and move randomly
-    noScale -= 0.1;
-    if(noScale < 0.2) noScale = 0.2;
-    noBtn.style.transform = `scale(${noScale})`;
-    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-
-    // Show a random sad message
-    sadMessage.style.display = 'block';
-    sadMessage.textContent = sadTexts[Math.floor(Math.random() * sadTexts.length)];
-
-    setTimeout(() => { sadMessage.style.display = 'none'; }, 2000);
+messages.forEach((msg, index) => {
+let slide = document.createElement("div");
+slide.className = "slide" + (index === 0 ? " active" : "");
+slide.innerHTML = "<div class='teddy'>🧸💖🧸</div>" + msg;
+slideContainer.appendChild(slide);
 });
 
-yesBtn.addEventListener('click', function() {
-    message.style.display = 'block';
-    yesBtn.style.display = 'none';
-    noBtn.style.display = 'none';
-    // create a burst of hearts
-    for(let i=0;i<30;i++){ createSticker(); }
-});
+let currentSlide = 0;
+let slides = document.querySelectorAll(".slide");
+let indicator = document.getElementById("indicator");
+let popup = document.getElementById("popup");
 
-// Floating stickers
-function createSticker(){
-    const sticker = document.createElement('div');
-    sticker.classList.add('sticker');
-    // Random emojis: hearts, sparkles, flowers
-    const emojis = ['💖','💘','✨','🌸','💞','🌹'];
-    sticker.innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
-    sticker.style.left = Math.random()*100+'vw';
-    sticker.style.fontSize = Math.random()*25+15+'px';
-    document.body.appendChild(sticker);
-    setTimeout(()=>sticker.remove(),5000);
+let voiceEnabled = true;
+
+function speak(text) {
+if (!voiceEnabled) return;
+
+window.speechSynthesis.cancel();
+let speech = new SpeechSynthesisUtterance(text);
+speech.rate = 0.9;
+speech.pitch = 1;
+speech.lang = "en-US";
+window.speechSynthesis.speak(speech);
 }
 
-setInterval(createSticker,300);
+function showSlide(index) {
+slides.forEach(slide => slide.classList.remove("active"));
+slides[index].classList.add("active");
+indicator.innerText = "Slide " + (index + 1) + " / " + slides.length;
+
+speak(messages[index]);
+
+if(index === slides.length - 1){
+setTimeout(()=> popup.classList.add("show"), 1000);
+}
+}
+
+function nextSlide() {
+currentSlide = (currentSlide + 1) % slides.length;
+showSlide(currentSlide);
+}
+
+function prevSlide() {
+currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+showSlide(currentSlide);
+}
+
+function toggleVoice(){
+voiceEnabled = !voiceEnabled;
+if(!voiceEnabled) window.speechSynthesis.cancel();
+}
+
+function closePopup(){
+popup.classList.remove("show");
+}
+
+/* Floating hearts */
+for (let i = 0; i < 30; i++) {
+let heart = document.createElement("div");
+heart.className = "heart";
+heart.innerHTML = "❤";
+heart.style.left = Math.random() * 100 + "vw";
+heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+document.body.appendChild(heart);
+}
+
+/* Speak first slide automatically */
+window.onload = () => speak(messages[0]);
 </script>
 
 </body>
