@@ -2,9 +2,7 @@
 <html>
 <head>
 <title>Arnu Loves You</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <style>
 body {
     margin: 0;
@@ -14,20 +12,17 @@ body {
     text-align: center;
     color: white;
 }
-
 h1 {
     margin-top: 20px;
-    font-size: 40px;
+    font-size: 38px;
     font-weight: 700;
 }
-
 .slide-container {
     position: relative;
     width: 85%;
-    height: 420px;
+    height: 450px;
     margin: 20px auto;
 }
-
 .slide {
     position: absolute;
     width: 100%;
@@ -37,20 +32,17 @@ h1 {
     padding: 20px;
     line-height: 1.8;
     font-size: 18px;
+    overflow-y: auto;
 }
-
 .active {
     opacity: 1;
     transform: scale(1);
 }
-
 .teddy {
     font-size: 40px;
     margin-bottom: 10px;
 }
-
 button {
-    font-family: 'Poppins', sans-serif;
     padding: 10px 22px;
     margin: 10px;
     border-radius: 25px;
@@ -60,12 +52,10 @@ button {
     color: white;
     font-weight: 600;
 }
-
 #indicator {
     margin-top: 10px;
     font-weight: 600;
 }
-
 .popup {
     position: fixed;
     top: 50%;
@@ -77,19 +67,27 @@ button {
     border-radius: 20px;
     transition: 0.5s;
     z-index: 1000;
+    max-width: 500px;
 }
-
 .popup.show {
     transform: translate(-50%, -50%) scale(1);
 }
+.heart {
+    position: absolute;
+    bottom: -50px;
+    font-size: 24px;
+    animation: float 6s linear infinite;
+}
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-900px) rotate(360deg); opacity: 0; }
+}
 </style>
 </head>
-
 <body>
 
 <h1>💖 Arnu loves you 💖</h1>
 <div id="indicator">Slide 1 / 20</div>
-
 <div class="slide-container" id="slides"></div>
 
 <button onclick="prevSlide()">⬅ Previous</button>
@@ -98,99 +96,109 @@ button {
 
 <div id="popup" class="popup">
 <h2>🎉 Happy 15 Months Anniversary 🎉</h2>
-<p>You are the most beautiful part of my life. I love you forever. 💖</p>
+<p>Arnu, these fifteen months with you have been the most magical journey of my life. You have filled every day with love, laughter, and warmth. I promise to always cherish you, protect your heart, and grow with you. You are my today, my tomorrow, and my forever. 💖</p>
 <button onclick="closePopup()">Close</button>
 </div>
 
 <script>
-
 const messages = [
-`Before you came into my life, everything felt ordinary and predictable... (FULL long paragraph 100+ words)`,
-`When you entered my world, you didn’t just bring happiness, you brought transformation... (100+ words romantic paragraph)`,
-`You filled my days with laughter, warmth, and a sense of belonging...`,
-`You became my safe place, my comfort, my peace...`,
-`Every conversation with you feels meaningful and special...`,
-`Your love has inspired me to grow and become stronger...`,
-`With you, I feel understood without even speaking...`,
-`You turned simple moments into unforgettable memories...`,
-`I never believed in destiny until I met you...`,
-`You have given my life direction and clarity...`,
-`Because of you, I believe in love deeply and fearlessly...`,
-`Your smile alone has the power to fix my worst days...`,
-`You taught me patience, kindness, and emotional strength...`,
-`Every dream I see now includes you beside me...`,
-`You changed the way I see the world and myself...`,
-`Loving you has been the most natural and beautiful feeling...`,
-`You gave my heart a home it never knew it was searching for...`,
-`My life feels complete because you are part of it...`,
-`Every heartbeat reminds me how lucky I am to have you...`,
-`🎉 Happy 15 Months Anniversary my love. These fifteen months have been the most beautiful journey of my life. You have filled my world with laughter, support, strength, and unconditional love. I promise to cherish you, respect you, and stand by you forever no matter what life brings our way. You are my today, my tomorrow, and my always.`
+`Before you came into my life, everything felt ordinary. I went through days like a machine, completing tasks but missing joy. I smiled, I laughed, yet deep inside, I always felt a void. Meeting you changed all that. Suddenly, life had meaning, every small moment became significant because it was shared with you. Your presence brought warmth to my heart, light to my days, and peace to my nights. I never knew life could feel so full, so beautiful, and so bright. Simply knowing you exist makes my world a better place.`,
+
+`The first time I truly spoke with you, I realized how comforting your presence could be. Your voice, your words, your laughter, everything about you made me feel seen and understood. Even on my worst days, thinking of you made my heart lighter. I started noticing beauty in places I had ignored, smiling at things I would have overlooked, because your love made me appreciate life in a new way. You didn’t just enter my life; you transformed it entirely.`,
+
+`Your love has made ordinary moments extraordinary. A walk in the park, a quiet evening at home, even mundane conversations feel magical because you are part of them. You have taught me the value of small joys and the beauty of being present. I feel complete when I am with you, as if my heart finally belongs somewhere. You have changed the way I see love and life, and I am endlessly grateful for every second I spend with you.`,
+
+`Before you, I was content but incomplete. Now, contentment has been replaced with profound happiness. Your smile lights up my world, your touch reassures me, and your words comfort me. I look forward to our conversations, our adventures, our quiet moments together. Every day with you feels like a blessing, and I cannot imagine my life without you. Loving you has brought me peace, joy, and excitement all at once.`,
+
+`You inspire me in ways I never thought possible. Your patience, your kindness, and your ability to see the good in every situation encourage me to become a better person. Your love strengthens me, and your belief in me gives me courage. Knowing that I have you by my side makes me feel unstoppable. You are not only my love but also my motivation, my confidence, and my heart’s deepest joy.`,
+
+`Even the simplest things become special with you. Cooking together, watching the rain, laughing over silly jokes — every shared moment feels priceless. Your presence transforms routine into celebration, and your love makes life beautiful. I never imagined I could feel this kind of happiness until you came along. I am grateful for every word, every hug, and every smile. You have changed my life completely.`,
+
+`You make me feel understood like no one else ever has. I can share my fears, my dreams, and my thoughts without hesitation. You listen, support, and comfort me in ways I cannot describe. Your love is safe and nurturing, making me feel valued and cherished. Because of you, I can fully express myself and enjoy the depth of connection that I had never experienced before.`,
+
+`I love how you bring laughter into my life. Your jokes, your funny expressions, your giggles — they make even the darkest days brighter. You have taught me to find joy in small things and to approach life with a lighter heart. Being with you makes me happy in a way I never knew was possible. I cherish every laugh we share and every smile you give me.`,
+
+`With you, I feel like I am finally home. A home not of walls or rooms, but of heart and soul. I feel safe, loved, and accepted completely. I do not have to pretend or hide; I am free to be myself. Your love gives me strength and reassurance. No matter what happens in life, I know we can face it together, and that knowledge brings me peace.`,
+
+`Your support has helped me grow in countless ways. You encourage me to pursue my dreams, comfort me when I doubt myself, and celebrate my achievements as if they were your own. Your love motivates me to be a better person, to strive for more, and to embrace life fully. I am a stronger, happier, and better person because of you.`,
+
+`You have shown me what true companionship means. Being with you is not just love; it is partnership, respect, and mutual understanding. I feel lucky to have someone who cares deeply for me, listens without judgment, and supports me in every step. Your love teaches me patience, humility, and joy. I treasure our bond and every memory we are creating together.`,
+
+`Every moment with you feels like magic. Even when we do nothing, the comfort of your presence makes everything perfect. I never knew silence could feel so full, so rich, so satisfying. Being near you brings peace to my soul, joy to my heart, and hope to my mind. You have transformed the ordinary into extraordinary just by being part of it.`,
+
+`Your love has healed parts of me I did not know were broken. The fears, insecurities, and doubts that weighed me down have been lightened by your presence. You make me feel accepted completely, and that acceptance has given me confidence and happiness. You have made me believe in love in its purest, truest form.`,
+
+`I feel grateful every day for having you in my life. Your laughter, your care, your words, and your support make life worth living. Every challenge seems smaller, every joy feels larger, and every day feels more meaningful because I share it with you. Your love gives me purpose, comfort, and endless happiness.`,
+
+`You are my inspiration. Your courage, optimism, and compassion encourage me to grow and embrace life fully. Because of you, I face challenges with strength, celebrate victories with joy, and approach life with hope. Your love empowers me and fills me with confidence.`,
+
+`You make my heart feel full. Every smile, hug, and kind word from you fills me with joy. Your presence brings warmth and light to my life. I feel lucky and blessed to have found someone as wonderful as you. Every day with you is a gift, and I treasure it deeply.`,
+
+`I cannot imagine my life without you. You have become the center of my world, the person I think about first in the morning and last at night. Your love is my anchor and my wings. You bring balance, happiness, and endless joy to my days. I am forever grateful for you.`,
+
+`With you, I feel complete. I have found a love that is safe, nurturing, and endlessly fulfilling. Every challenge, every joy, every day is better because I share it with you. I promise to cherish and love you, today and always.`,
+
+`Every heartbeat reminds me how lucky I am to have you. Your love has changed my life completely, filled it with laughter, comfort, and hope. I cannot imagine a future without you, and I look forward to every moment we will share together.`,
+
+`🎉 Happy 15 Months Anniversary, Arnu! 🎉 These fifteen months with you have been the most magical journey of my life. You have filled every day with love, laughter, and joy. I promise to always cherish you, support you, and love you with all my heart. You are my today, my tomorrow, and my forever. 💖`
 ];
 
 const container = document.getElementById("slides");
-
-messages.forEach((msg, index) => {
-let slide = document.createElement("div");
-slide.className = "slide" + (index === 0 ? " active" : "");
-slide.innerHTML = "<div class='teddy'>🧸💖🧸</div>" + msg;
-container.appendChild(slide);
+messages.forEach((msg, index)=>{
+  let slide = document.createElement("div");
+  slide.className = "slide" + (index===0?" active":"");
+  slide.innerHTML = "<div class='teddy'>🧸💖🧸</div>" + msg;
+  container.appendChild(slide);
 });
 
-let currentSlide = 0;
-let slides = document.querySelectorAll(".slide");
-let indicator = document.getElementById("indicator");
-let popup = document.getElementById("popup");
+let currentSlide=0;
+let slides=document.querySelectorAll(".slide");
+let indicator=document.getElementById("indicator");
+let popup=document.getElementById("popup");
+let voiceEnabled=false;
+let selectedVoice=null;
 
-let voiceEnabled = false;
-let selectedVoice = null;
-
-function loadVoices() {
-let voices = speechSynthesis.getVoices();
-selectedVoice = voices.find(v => v.name.toLowerCase().includes("female")) || voices[0];
+function loadVoices(){
+  let voices = speechSynthesis.getVoices();
+  selectedVoice = voices.find(v=>v.name.toLowerCase().includes("female")) || voices[0];
 }
 speechSynthesis.onvoiceschanged = loadVoices;
 
-function speak(text) {
-if (!voiceEnabled) return;
-speechSynthesis.cancel();
-let speech = new SpeechSynthesisUtterance(text);
-speech.voice = selectedVoice;
-speech.rate = 0.9;
-speech.pitch = 1;
-speech.lang = "en-US";
-speechSynthesis.speak(speech);
+function speak(text){
+  if(!voiceEnabled) return;
+  speechSynthesis.cancel();
+  let speech = new SpeechSynthesisUtterance(text);
+  speech.voice=selectedVoice;
+  speech.rate=1.25;
+  speech.pitch=1.2;
+  speech.lang="en-US";
+  speechSynthesis.speak(speech);
 }
 
-function enableVoice(){
-voiceEnabled = true;
-speak(messages[currentSlide]);
+function enableVoice(){voiceEnabled=true;speak(messages[currentSlide]);}
+
+function showSlide(index){
+  slides.forEach(s=>s.classList.remove("active"));
+  slides[index].classList.add("active");
+  indicator.innerText="Slide "+(index+1)+" / "+slides.length;
+  speak(messages[index]);
+  if(index===slides.length-1){setTimeout(()=>popup.classList.add("show"),1000);}
 }
 
-function showSlide(index) {
-slides.forEach(slide => slide.classList.remove("active"));
-slides[index].classList.add("active");
-indicator.innerText = "Slide " + (index + 1) + " / " + slides.length;
-speak(messages[index]);
+function nextSlide(){currentSlide=(currentSlide+1)%slides.length;showSlide(currentSlide);}
+function prevSlide(){currentSlide=(currentSlide-1+slides.length)%slides.length;showSlide(currentSlide);}
+function closePopup(){popup.classList.remove("show");}
 
-if(index === slides.length - 1){
-setTimeout(()=> popup.classList.add("show"), 1000);
-}
-}
-
-function nextSlide(){
-currentSlide = (currentSlide + 1) % slides.length;
-showSlide(currentSlide);
-}
-
-function prevSlide(){
-currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-showSlide(currentSlide);
-}
-
-function closePopup(){
-popup.classList.remove("show");
+// floating hearts
+for(let i=0;i<30;i++){
+  let heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="❤";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.animationDuration=(Math.random()*3+3)+"s";
+  heart.style.fontSize=(Math.random()*20+10)+"px";
+  document.body.appendChild(heart);
 }
 </script>
-
 </body>
 </html>
